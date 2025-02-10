@@ -1,19 +1,17 @@
 import 'package:client/core/extentions/media_query_extention.dart';
-import 'package:client/core/extentions/navigation_extention.dart';
 import 'package:client/features/auth/view/widgets/auth_button.dart';
 import 'package:client/features/auth/view/widgets/auth_check_signing.dart';
 import 'package:client/features/auth/view/widgets/auth_text_field.dart';
 import 'package:flutter/material.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-  final TextEditingController _nameController = TextEditingController();
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -22,7 +20,6 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void dispose() {
     super.dispose();
-    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
   }
@@ -30,13 +27,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        leading: IconButton(
-          onPressed: () => context.pop(),
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-        ),
-      ),
+      appBar: AppBar(forceMaterialTransparency: true),
       body: Stack(
         clipBehavior: Clip.antiAlias,
         children: [
@@ -59,17 +50,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 spacing: context.screenHeight * 0.02,
                 children: [
                   Text(
-                    'Sign Up.',
+                    'Login.',
                     style: TextStyle(
                       fontSize: context.devicePixelRatio * 13,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: context.screenHeight * 0.001),
-                  AuthTextField(
-                    hintText: 'Name',
-                    controller: _nameController,
-                  ),
                   AuthTextField(
                     hintText: 'Email',
                     controller: _emailController,
@@ -84,9 +71,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     onTap: () {
                       if (_key.currentState!.validate()) {}
                     },
-                    title: 'Sign up',
+                    title: 'Login',
                   ),
-                  const AuthCheckSigning(isSigningUp: true)
+                  const AuthCheckSigning(isSigningUp: false)
                 ],
               ),
             ),

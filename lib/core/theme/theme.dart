@@ -10,14 +10,22 @@ class AppTheme {
 
   static final darkTheme = ThemeData.dark().copyWith(
     scaffoldBackgroundColor: AppPallete.backgroundColor,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: AppPallete.backgroundColor,
-    ),
+    appBarTheme: const AppBarTheme(backgroundColor: AppPallete.backgroundColor),
     inputDecorationTheme: InputDecorationTheme(
       enabledBorder: _border(),
       focusedBorder: _border(AppPallete.gradient2),
       border: _border(),
       errorBorder: _border(AppPallete.errorColor),
     ),
+    pageTransitionsTheme: PageTransitionsTheme(
+      builders: {
+        TargetPlatform.android: _customPageTransition(),
+        TargetPlatform.iOS: _customPageTransition(),
+      },
+    ),
   );
+
+  static PageTransitionsBuilder _customPageTransition() {
+    return const CupertinoPageTransitionsBuilder();
+  }
 }

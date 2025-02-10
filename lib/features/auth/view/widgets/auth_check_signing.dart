@@ -17,7 +17,7 @@ class AuthCheckSigning extends StatelessWidget {
             : 'Don\'t have an account? '),
         GestureDetector(
           onTap: () {
-            isSigningUp ? null : context.push(const SignUpPage());
+            !isSigningUp ? context.push(const SignUpPage()) : context.pop();
           },
           child: Text(
             isSigningUp ? 'Login' : 'Sign up',
