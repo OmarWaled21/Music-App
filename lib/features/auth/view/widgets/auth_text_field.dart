@@ -29,6 +29,12 @@ class _AuthTextFieldState extends State<AuthTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return '${widget.hintText} is required';
+        }
+        return null;
+      },
       controller: widget.controller,
       obscureText: _isSecured,
       cursorColor: AppPallete.gradient1,

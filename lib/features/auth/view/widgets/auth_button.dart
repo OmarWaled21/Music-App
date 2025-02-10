@@ -10,24 +10,27 @@ class AuthButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      width: context.screenWidth,
-      height: context.screenHeight * 0.06,
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [AppPallete.gradient1, AppPallete.gradient2],
-          begin: Alignment.bottomLeft,
-          end: Alignment.bottomRight,
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        alignment: Alignment.center,
+        width: context.screenWidth,
+        height: context.screenHeight * 0.06,
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [AppPallete.gradient1, AppPallete.gradient2],
+            begin: Alignment.bottomLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(10),
         ),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Text(
-        title,
-        style: TextStyle(
-          color: AppPallete.backgroundColor,
-          fontWeight: FontWeight.bold,
-          fontSize: context.devicePixelRatio * 6,
+        child: Text(
+          title,
+          style: TextStyle(
+            color: AppPallete.backgroundColor,
+            fontWeight: FontWeight.bold,
+            fontSize: context.devicePixelRatio * 6,
+          ),
         ),
       ),
     );

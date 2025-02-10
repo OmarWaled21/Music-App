@@ -73,7 +73,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     isSecured: true,
                   ),
                   SizedBox(height: context.screenHeight * 0.01),
-                  AuthButton(onTap: () {}, title: 'Sign up'),
+                  AuthButton(
+                    onTap: () {
+                      if (_key.currentState!.validate()) {}
+                    },
+                    title: 'Sign up',
+                  ),
                   const AuthCheckSigning(isSigningUp: true)
                 ],
               ),
