@@ -1,9 +1,11 @@
 import 'package:client/core/extentions/media_query_extention.dart';
 import 'package:client/core/extentions/navigation_extention.dart';
+import 'package:client/features/auth/repositories/auth_remote_repository.dart';
 import 'package:client/features/auth/view/widgets/auth_button.dart';
 import 'package:client/features/auth/view/widgets/auth_check_signing.dart';
 import 'package:client/features/auth/view/widgets/auth_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart' as fp;
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -81,8 +83,20 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   SizedBox(height: context.screenHeight * 0.01),
                   AuthButton(
-                    onTap: () {
-                      if (_key.currentState!.validate()) {}
+                    onTap: () async {
+                      if (_key.currentState!.validate()) {
+                        final res = await AuthRemoteRepository().signup(
+                          name: _nameController.text.trim(),
+                          email: _emailController.text.trim(),
+                          password: _passwordController.text.trim(),
+                        );
+
+                        final val = switch (res) {
+                          fp.Left(value: final l) => l,
+                          fp.Right(value: final r) => r.name,
+                        };
+                        print(val);
+                      }
                     },
                     title: 'Sign up',
                   ),
