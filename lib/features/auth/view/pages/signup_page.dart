@@ -1,6 +1,9 @@
 import 'package:client/core/extentions/media_query_extention.dart';
 import 'package:client/core/extentions/navigation_extention.dart';
+import 'package:client/core/theme/app_pallete.dart';
 import 'package:client/core/widgets/loader.dart';
+import 'package:client/core/widgets/snackbar.dart';
+import 'package:client/features/auth/view/pages/login_page.dart';
 import 'package:client/features/auth/view/widgets/auth_button.dart';
 import 'package:client/features/auth/view/widgets/auth_check_signing.dart';
 import 'package:client/features/auth/view/widgets/auth_text_field.dart';
@@ -33,6 +36,32 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(authViewModelProvider)?.isLoading == true;
+
+    ref.listen(
+      authViewModelProvider,
+      (_, next) {
+        next?.when(
+          data: (data) {
+            context.push(const LoginPage());
+            showSnackBar(
+              context: context,
+              message: 'Account created successfully! now please login',
+              icon: Icons.done,
+              color: AppPallete.gradient1,
+            );
+          },
+          error: (error, stackTrace) {
+            showSnackBar(
+              context: context,
+              message: error.toString(),
+              icon: Icons.error,
+              color: AppPallete.errorColor,
+            );
+          },
+          loading: () {},
+        );
+      },
+    );
 
     return Scaffold(
       appBar: AppBar(

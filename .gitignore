@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+server_constant.dart
+/lib/core/constants/server_constant.dart
