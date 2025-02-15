@@ -1,20 +1,21 @@
 import 'package:client/core/extentions/media_query_extention.dart';
 import 'package:client/core/extentions/navigation_extention.dart';
-import 'package:client/features/auth/repositories/auth_remote_repository.dart';
+import 'package:client/core/widgets/loader.dart';
 import 'package:client/features/auth/view/widgets/auth_button.dart';
 import 'package:client/features/auth/view/widgets/auth_check_signing.dart';
 import 'package:client/features/auth/view/widgets/auth_text_field.dart';
+import 'package:client/features/auth/viewmodel/auth_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:fpdart/fpdart.dart' as fp;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SignUpPage extends StatefulWidget {
+class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  ConsumerState<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignUpPageState extends ConsumerState<SignUpPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -31,6 +32,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(authViewModelProvider)?.isLoading == true;
+
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
@@ -39,74 +42,72 @@ class _SignUpPageState extends State<SignUpPage> {
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
         ),
       ),
-      body: Stack(
-        clipBehavior: Clip.antiAlias,
-        children: [
-          Positioned(
-            bottom: -120,
-            left: -60,
-            child: Image.asset(
-              'assets/image.png',
-              width: context.screenWidth,
-              opacity: const AlwaysStoppedAnimation(.2),
-            ),
-          ),
-          Padding(
-            padding:
-                EdgeInsets.symmetric(horizontal: context.screenWidth * 0.04),
-            child: Form(
-              key: _key,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: context.screenHeight * 0.02,
-                children: [
-                  Text(
-                    'Sign Up.',
-                    style: TextStyle(
-                      fontSize: context.devicePixelRatio * 13,
-                      fontWeight: FontWeight.bold,
+      body: isLoading
+          ? const Loader()
+          : Stack(
+              clipBehavior: Clip.antiAlias,
+              children: [
+                Positioned(
+                  bottom: -120,
+                  left: -60,
+                  child: Image.asset(
+                    'assets/image.png',
+                    width: context.screenWidth,
+                    opacity: const AlwaysStoppedAnimation(.2),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: context.screenWidth * 0.04),
+                  child: Form(
+                    key: _key,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      spacing: context.screenHeight * 0.02,
+                      children: [
+                        Text(
+                          'Sign Up.',
+                          style: TextStyle(
+                            fontSize: context.devicePixelRatio * 13,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: context.screenHeight * 0.001),
+                        AuthTextField(
+                          hintText: 'Name',
+                          controller: _nameController,
+                        ),
+                        AuthTextField(
+                          hintText: 'Email',
+                          controller: _emailController,
+                        ),
+                        AuthTextField(
+                          hintText: 'Password',
+                          controller: _passwordController,
+                          isSecured: true,
+                        ),
+                        SizedBox(height: context.screenHeight * 0.01),
+                        AuthButton(
+                          onTap: () async {
+                            if (_key.currentState!.validate()) {
+                              await ref
+                                  .read(authViewModelProvider.notifier)
+                                  .signUpUser(
+                                    name: _nameController.text.trim(),
+                                    email: _emailController.text.trim(),
+                                    password: _passwordController.text.trim(),
+                                  );
+                            }
+                          },
+                          title: 'Sign up',
+                        ),
+                        const AuthCheckSigning(isSigningUp: true)
+                      ],
                     ),
                   ),
-                  SizedBox(height: context.screenHeight * 0.001),
-                  AuthTextField(
-                    hintText: 'Name',
-                    controller: _nameController,
-                  ),
-                  AuthTextField(
-                    hintText: 'Email',
-                    controller: _emailController,
-                  ),
-                  AuthTextField(
-                    hintText: 'Password',
-                    controller: _passwordController,
-                    isSecured: true,
-                  ),
-                  SizedBox(height: context.screenHeight * 0.01),
-                  AuthButton(
-                    onTap: () async {
-                      if (_key.currentState!.validate()) {
-                        final res = await AuthRemoteRepository().signup(
-                          name: _nameController.text.trim(),
-                          email: _emailController.text.trim(),
-                          password: _passwordController.text.trim(),
-                        );
-
-                        final val = switch (res) {
-                          fp.Left(value: final l) => l,
-                          fp.Right(value: final r) => r.name,
-                        };
-                        print(val);
-                      }
-                    },
-                    title: 'Sign up',
-                  ),
-                  const AuthCheckSigning(isSigningUp: true)
-                ],
-              ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }
