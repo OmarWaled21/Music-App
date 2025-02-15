@@ -7,12 +7,18 @@ part 'auth_view_model.g.dart';
 @riverpod
 class AuthViewModel extends _$AuthViewModel {
   late AuthRemoteRepository _authRemoteRepository;
+<<<<<<< HEAD
   late AuthLocaleRepository _authLocaleRepository;
+=======
+>>>>>>> 321d42b602c469ffb4c06aac4beb0e6cfce045ab
 
   @override
   AsyncValue<UserModel>? build() {
     _authRemoteRepository = ref.watch(authRemoteRepositoryProvider);
+<<<<<<< HEAD
     _authLocaleRepository = ref.watch(authLocaleRepositoryProvider);
+=======
+>>>>>>> 321d42b602c469ffb4c06aac4beb0e6cfce045ab
     return null;
   }
 
@@ -52,6 +58,7 @@ class AuthViewModel extends _$AuthViewModel {
 
     return res.fold(
       (l) => state = AsyncError(l.message, StackTrace.current),
+<<<<<<< HEAD
       (r) => state = _loginSuccess(r)!,
     );
   }
@@ -60,4 +67,9 @@ class AuthViewModel extends _$AuthViewModel {
     _authLocaleRepository.setToken(user.token);
     return state = AsyncData(user);
   }
+=======
+      (r) => state = AsyncData(r),
+    );
+  }
+>>>>>>> 321d42b602c469ffb4c06aac4beb0e6cfce045ab
 }
