@@ -8,6 +8,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final container = ProviderContainer();
   await container.read(authViewModelProvider.notifier).initSharedPrefrences();
+  await container.read(authViewModelProvider.notifier).getData();
   runApp(
     UncontrolledProviderScope(
       container: container,
@@ -21,6 +22,7 @@ class MusicApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Music App',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
       home: const LoginPage(),

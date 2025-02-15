@@ -32,7 +32,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(authViewModelProvider)?.isLoading == true;
+    final isLoading =
+        ref.watch(authViewModelProvider.select((data) => data?.isLoading)) ==
+            true;
 
     ref.listen(
       authViewModelProvider,
@@ -42,7 +44,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             // context.push(const SignUpPage());
             showSnackBar(
               context: context,
-              message: 'Account created successfully!',
+              message: 'Account logined successfully!',
               icon: Icons.done,
               color: AppPallete.gradient1,
             );
