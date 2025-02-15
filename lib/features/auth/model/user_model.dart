@@ -1,20 +1,30 @@
+import 'dart:convert';
+
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class UserModel {
   final String id;
   final String name;
   final String email;
+  final String token;
 
-  UserModel({required this.id, required this.name, required this.email});
+  UserModel({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.token,
+  });
 
   UserModel copyWith({
     String? id,
     String? name,
     String? email,
+    String? token,
   }) {
     return UserModel(
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
+      token: token ?? this.token,
     );
   }
 
@@ -23,6 +33,7 @@ class UserModel {
       'id': id,
       'name': name,
       'email': email,
+      'token': token,
     };
   }
 
@@ -31,6 +42,7 @@ class UserModel {
       id: map['id'] ?? '',
       name: map['name'] ?? '',
       email: map['email'] ?? '',
+      token: map['token'] ?? '',
     );
   }
 
@@ -38,12 +50,24 @@ class UserModel {
   bool operator ==(covariant UserModel other) {
     if (identical(this, other)) return true;
 
-    return other.id == id && other.name == name && other.email == email;
+    return other.id == id &&
+        other.name == name &&
+        other.email == email &&
+        other.token == token;
   }
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ email.hashCode;
+  int get hashCode {
+    return id.hashCode ^ name.hashCode ^ email.hashCode ^ token.hashCode;
+  }
 
   @override
-  String toString() => 'UserModel(id: $id, name: $name, email: $email)';
+  String toString() {
+    return 'UserModel(id: $id, name: $name, email: $email, token: $token)';
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory UserModel.fromJson(String source) =>
+      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }
