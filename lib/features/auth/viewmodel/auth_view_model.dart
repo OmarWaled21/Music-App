@@ -1,3 +1,4 @@
+import 'package:client/core/providers/current_user_notifier.dart';
 import 'package:client/features/auth/model/user_model.dart';
 import 'package:client/features/auth/repositories/auth_locale_repository.dart';
 import 'package:client/features/auth/repositories/auth_remote_repository.dart';
@@ -9,11 +10,13 @@ part 'auth_view_model.g.dart';
 class AuthViewModel extends _$AuthViewModel {
   late final AuthLocaleRepository _authLocaleRepository;
   late final AuthRemoteRepository _authRemoteRepository;
+  late final CurrentUserNotifier _currentUserNotifier;
 
   @override
   AsyncValue<UserModel>? build() {
     _authLocaleRepository = ref.watch(authLocaleRepositoryProvider);
     _authRemoteRepository = ref.watch(authRemoteRepositoryProvider);
+    _currentUserNotifier = ref.watch(currentUserNotifierProvider.notifier);
     return null;
   }
 
@@ -59,6 +62,7 @@ class AuthViewModel extends _$AuthViewModel {
 
   AsyncValue<UserModel>? _loginSuccess(UserModel user) {
     _authLocaleRepository.setToken(user.token);
+    _currentUserNotifier.addUser(user);
     return state = AsyncData(user);
   }
 
@@ -69,7 +73,10 @@ class AuthViewModel extends _$AuthViewModel {
       final res = await _authRemoteRepository.getCurrentUser(token);
       final val = res.fold(
         (l) => state = AsyncError(l.message, StackTrace.current),
-        (r) => state = AsyncData(r),
+        (r) {
+          _currentUserNotifier.addUser(r);
+          return state = AsyncData(r);
+        },
       );
       return val.value;
     }

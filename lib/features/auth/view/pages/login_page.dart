@@ -7,6 +7,7 @@ import 'package:client/features/auth/view/widgets/auth_button.dart';
 import 'package:client/features/auth/view/widgets/auth_check_signing.dart';
 import 'package:client/features/auth/view/widgets/auth_text_field.dart';
 import 'package:client/features/auth/viewmodel/auth_view_model.dart';
+import 'package:client/features/home/view/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -41,14 +42,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       (_, next) {
         next?.when(
           data: (data) {
-            // context.push(const SignUpPage());
+            context.push(const HomePage());
             showSnackBar(
               context: context,
               message: 'Account logined successfully!',
               icon: Icons.done,
               color: AppPallete.gradient1,
             );
-            print(data);
           },
           error: (error, stackTrace) {
             showSnackBar(
