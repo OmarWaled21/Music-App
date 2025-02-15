@@ -46,10 +46,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               icon: Icons.done,
               color: AppPallete.gradient1,
             );
-<<<<<<< HEAD
             print(data);
-=======
->>>>>>> 321d42b602c469ffb4c06aac4beb0e6cfce045ab
           },
           error: (error, stackTrace) {
             showSnackBar(

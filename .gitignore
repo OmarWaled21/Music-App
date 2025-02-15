@@ -45,7 +45,3 @@ app.*.map.json
 /android/app/release
 
 server_constant.dart
-<<<<<<< HEAD
-=======
-/lib/core/constants/server_constant.dart
->>>>>>> 321d42b602c469ffb4c06aac4beb0e6cfce045ab
